@@ -24,3 +24,5 @@ class Resources {
         })
     }
 }
+
+export const resources = new Resources();
