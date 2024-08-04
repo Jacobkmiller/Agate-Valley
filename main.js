@@ -1,3 +1,5 @@
+import { GameLoop } from "./src/GameLoop.js";
+import { Input, DOWN, UP, LEFT, RIGHT } from "./src/Input.js";
 import { resources } from "./src/Resource.js";
 import { Sprite } from "./src/Sprite.js";
 import { Vector2 } from "./src/Vector2.js";
@@ -25,19 +27,48 @@ const hero = new Sprite({
     frame: 1
 })
 
-const heroPos = new Vector2(16 * 5, 16 * 5)
+const shadow = new Sprite({
+    resource: resources.images.shadow,
+    frameSize: new Vector2(32, 32)
+})
 
-const draw = () => {
-    console.log('telling sky to draw')
-   skySprite.drawImage(ctx, 0, 0);
-   console.log('telling ground to draw')
-   groundSprite.drawImage(ctx, 0, 0);
+const heroPos = new Vector2(16 * 6, 16 * 5)
+const input = new Input();
 
-   hero.drawImage(ctx, heroPos.x, heroPos.y)
+const update = () => {
+    // Updating entities in the game 
+    // hero.frame += 1
+    if (input.direction === DOWN) {
+        heroPos.y += 1;
+    }
+    if (input.direction === UP) {
+        heroPos.y -= 1;
+    }
+    if (input.direction === LEFT) {
+        heroPos.x -= 1;
+    }
+    if (input.direction === RIGHT) {
+        heroPos.x += 1;
+    }
 }
 
+const draw = () => {
+   skySprite.drawImage(ctx, 0, 0);
+   groundSprite.drawImage(ctx, 0, 0);
 
-setInterval(() => {
-    draw()
-}, 300)
-draw()
+   // Center the hero in cell
+   const heroOffset = new Vector2(-8, -21);
+   const heroPosX = heroPos.x + heroOffset.x;
+   const heroPosY = heroPos.y + 1 + heroOffset.y;
+
+   shadow.drawImage(ctx, heroPosX, heroPosY);
+   hero.drawImage(ctx, heroPosX, heroPosY);
+}
+
+const gameLoop = new GameLoop(update, draw)
+gameLoop.start();
+
+// setInterval(() => {
+//     draw()
+// }, 300)
+// draw()

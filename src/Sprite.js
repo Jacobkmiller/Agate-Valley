@@ -25,7 +25,7 @@ export class Sprite {
         let frameCount = 0;
         for (let v = 0; v < this.vFrames; v++) {
             for (let h = 0; h < this.hFrames; h++) {
-                console.log("frame", h, v);
+                // console.log("frame", h, v);
                 this.frameMap.set(
                     frameCount,
                     new Vector2(this.frameSize.x * h, this.frameSize.y * v)
@@ -37,11 +37,11 @@ export class Sprite {
 
     drawImage(ctx, x, y) {
         if (!this.resource.isLoaded) {
-            console.log('sprite not loaded')
+            // console.log('sprite not loaded')
             return;
         }
 
-        console.log('sprite loaded')
+        // console.log('sprite loaded')
 
         // Find the correct sprite sheet frame to use
         let frameCoordX = 0;
