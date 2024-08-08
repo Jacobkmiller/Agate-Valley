@@ -40,15 +40,19 @@ const update = () => {
     // hero.frame += 1
     if (input.direction === DOWN) {
         heroPos.y += 1;
+        hero.frame = 0;
     }
     if (input.direction === UP) {
         heroPos.y -= 1;
+        hero.frame = 6;
     }
     if (input.direction === LEFT) {
         heroPos.x -= 1;
+        hero.frame = 9;
     }
     if (input.direction === RIGHT) {
         heroPos.x += 1;
+        hero.frame = 3;
     }
 }
 
