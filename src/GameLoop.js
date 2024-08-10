@@ -7,7 +7,7 @@ export class GameLoop {
         this.update = update;
         this.render = render;
 
-        this.rafId = null; 
+        this.rafId = null;
         this.isRunning = false;
     }
 

@@ -3,8 +3,9 @@ import { Input, DOWN, UP, LEFT, RIGHT } from "./src/Input.js";
 import { resources } from "./src/Resource.js";
 import { Sprite } from "./src/Sprite.js";
 import { Vector2 } from "./src/Vector2.js";
-import { gridCells } from "./src/helpers/grid.js";
+import { gridCells, isSpaceFree } from "./src/helpers/grid.js";
 import { moveTowards } from "./src/helpers/moveTowards.js";
+import { walls } from "./src/levels/level1.js";
 
 console.log("Kat loves Jake:)")
 
@@ -76,8 +77,11 @@ const tryMove = () => {
         hero.frame = 3;
     }
 
-    heroDestinationPosition.x = nextX;
-    heroDestinationPosition.y = nextY;
+    // Validating that the next destination is free
+    if (isSpaceFree(walls, nextX, nextY)) {
+      heroDestinationPosition.x = nextX;
+      heroDestinationPosition.y = nextY;
+    }
 }
 
 const draw = () => {
