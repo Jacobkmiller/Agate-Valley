@@ -26,7 +26,7 @@ export class Hero extends GameObject {
     this.body = new Sprite({
     resource: resources.images.hero,
     frameSize: new Vector2(32, 32),
-    hFrames:3,
+    hFrames: 3,
     vFrames: 8,
     frame: 1,
     position: new Vector2(-8, -20),
