@@ -1,4 +1,5 @@
 import { Animations } from "../../Animations.js";
+import { events } from "../../Events.js";
 import { FrameIndexPattern } from "../../FrameIndexPattern.js";
 import { GameObject } from "../../GameObject.js";
 import { DOWN, LEFT, RIGHT, UP } from "../../Input.js";
@@ -54,6 +55,19 @@ this.addChild(this.body);
     if (hasArrived) {
       this.tryMove(root);
     }
+
+    this.tryeEmitPosition()
+  }
+
+  tryeEmitPosition() {
+    if (this.lastX === this.position.x && this.lastY === this.position.y) {
+      return
+    }
+
+    this.lastX = this.position.x;
+    this.lastY = this.position.y;
+
+    events.emit("HERO_POSITION", this.position)
   }
 
   tryMove(root) {

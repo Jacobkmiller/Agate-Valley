@@ -1,4 +1,6 @@
 import { Animations } from "./src/Animations.js";
+import { Camera } from "./src/Camera.js";
+import { events } from "./src/Events.js";
 import { FrameIndexPattern } from "./src/FrameIndexPattern.js";
 import { GameLoop } from "./src/GameLoop.js";
 import { GameObject } from "./src/GameObject.js";
@@ -28,7 +30,7 @@ const skySprite = new Sprite({
     resource: resources.images.sky,
     frameSize: new Vector2(320, 180)
 })
-mainScene.addChild(skySprite);
+// mainScene.addChild(skySprite);
 
 const groundSprite = new Sprite({
     resource: resources.images.ground,
@@ -40,6 +42,9 @@ mainScene.addChild(groundSprite);
 const hero = new Hero(gridCells(6), gridCells(5))
 mainScene.addChild(hero);
 
+const camera = new Camera()
+mainScene.addChild(camera)
+
 // Add an Input class to the main scene
 mainScene.input = new Input();
 
@@ -49,8 +54,22 @@ const update = (delta) => {
 }
 
 const draw = () => {
+  // clear anything stale
+  ctx.clearRect(0, 0, canvas.clientWidth, canvas.height)
 
+  skySprite.drawImage(ctx, 0, 0)
+
+  // Save the current state (for camera offset)
+  ctx.save();
+
+  // offset everything by camera position
+  ctx.translate(camera.position.x, camera.position.y)
+
+  // draw objects in teh mounted scene
   mainScene.draw(ctx, 0, 0);
+
+  // Restore to original state
+  ctx.restore();
 };
 
 // Start the game
