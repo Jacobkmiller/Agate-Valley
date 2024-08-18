@@ -13,6 +13,7 @@ import { moveTowards } from "./src/helpers/moveTowards.js";
 import { walls } from "./src/levels/level1.js";
 import { Hero } from "./src/objects/Hero/Hero.js";
 import { STAND_DOWN, STAND_LEFT, STAND_RIGHT, STAND_UP, WALK_DOWN, WALK_LEFT, WALK_RIGHT, WALK_UP } from "./src/objects/Hero/heroAnimations.js";
+import { Inventory } from "./src/objects/Inventory/Inventory.js";
 import { Rod } from "./src/objects/Rod/Rod.js";
 
 console.log("Kat loves Jake:)")
@@ -49,6 +50,8 @@ mainScene.addChild(camera)
 const rod = new Rod(gridCells(7), gridCells(6))
 mainScene.addChild(rod);
 
+const inventory = new Inventory();
+
 // Add an Input class to the main scene
 mainScene.input = new Input();
 
@@ -74,6 +77,9 @@ const draw = () => {
 
   // Restore to original state
   ctx.restore();
+
+  // Draw anything above the game world
+  inventory.draw(ctx, 0, 0)
 };
 
 // Start the game
