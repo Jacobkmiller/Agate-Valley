@@ -13,6 +13,7 @@ import { moveTowards } from "./src/helpers/moveTowards.js";
 import { walls } from "./src/levels/level1.js";
 import { Hero } from "./src/objects/Hero/Hero.js";
 import { STAND_DOWN, STAND_LEFT, STAND_RIGHT, STAND_UP, WALK_DOWN, WALK_LEFT, WALK_RIGHT, WALK_UP } from "./src/objects/Hero/heroAnimations.js";
+import { Rod } from "./src/objects/Rod/Rod.js";
 
 console.log("Kat loves Jake:)")
 
@@ -44,6 +45,9 @@ mainScene.addChild(hero);
 
 const camera = new Camera()
 mainScene.addChild(camera)
+
+const rod = new Rod(gridCells(7), gridCells(6))
+mainScene.addChild(rod);
 
 // Add an Input class to the main scene
 mainScene.input = new Input();
