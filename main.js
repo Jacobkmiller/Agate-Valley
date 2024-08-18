@@ -80,6 +80,14 @@ const draw = () => {
 const gameLoop = new GameLoop(update, draw)
 gameLoop.start();
 
+let played = false
+window.addEventListener('click', (e) => {
+  if (played) { return }
+  const midiPlayer = document.getElementById('midiPlayer')
+  played = true
+  midiPlayer.playButton.click()
+})
+
 // setInterval(() => {
 //     draw()
 // }, 300)

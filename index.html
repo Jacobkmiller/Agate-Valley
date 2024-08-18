@@ -8,7 +8,14 @@
         <title>Agate Valley</title>
     </head>
     <body>
+        <script src="https://cdn.jsdelivr.net/combine/npm/tone@14.7.58,npm/@magenta/music@1.23.1/es6/core.js,npm/focus-visible@5,npm/html-midi-player@1.5.0"></script>
         <canvas id="game-canvas" width="320" height="180"></canvas>
         <script type="module" src="/main.js"></script>
+        <midi-player
+  src="./public/music/mii-channel.mid"
+  sound-font visualizer="#myVisualizer" id="midiPlayer" style="display: none;">
+</midi-player>
+<!-- <midi-visualizer type="piano-roll" id="myVisualizer"></midi-visualizer> -->
+
     </body>
 </html>
