@@ -14,14 +14,16 @@ export class Rod extends GameObject {
             position: new Vector2(0, -5) // nudge upwards visually
         })
         this.addChild(sprite);
-        events.on("HERO_POSITION", this, pos => {
+    }
+
+    ready () {
+      events.on("HERO_POSITION", this, pos => {
         // detect overlap...
         const roundedHeroX = Math.round(pos.x);
         const roundedHeroY = Math.round(pos.y);
         if (roundedHeroX === this.position.x && roundedHeroY ===this.position.y) {
             this.onCollideWithHero();
         }
-
        })
     }
 
