@@ -18,7 +18,7 @@ class InteractiveObject extends GameObject {
           events: [
             { type: "textMessage", text: "Choose an option..." },
             // { type: "interactionMenu", options: this.interactiveObjectClass.getOptions() },
-            { type: "interactionMenu", optionsList: config.options, interactiveObjectInstance: this.interactiveObjectClass },
+            { type: "interactionMenu", optionsList: config.options, interactiveObjectInstance: this.interactiveObjectClass, interactiveObjectClassInstance: this },
             { type: "addStoryFlag", flag: this.storyFlag },
           ]
         }
@@ -28,6 +28,9 @@ class InteractiveObject extends GameObject {
     //  this.sprite.currentAnimation = playerState.storyFlags[this.storyFlag]
     //   ? "used-down"
     //   : "unused-down";
+    }
+    setStoryFlag(storyFlag) {
+      this.storyFlag = storyFlag;
     }
   
   }
