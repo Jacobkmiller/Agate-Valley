@@ -247,7 +247,7 @@ window.OverworldMaps = {
       hero: {
         type: "Person",
         isPlayerControlled: true,
-        x: utils.withGrid(16),
+        x: utils.withGrid(17),
         y: utils.withGrid(9),
       },
       kitchenNpcB: {
@@ -402,49 +402,7 @@ window.OverworldMaps = {
         ]
       }]
     },
-    walls: {
-      [utils.asGridCoord(16,8)]: true,
-      [utils.asGridCoord(15,9)]: true,
-      // [utils.asGridCoord(3,4)]: true,
-      // [utils.asGridCoord(5,4)]: true,
-      // [utils.asGridCoord(6,4)]: true,
-      // [utils.asGridCoord(7,4)]: true,
-      // [utils.asGridCoord(8,4)]: true,
-      // [utils.asGridCoord(11,4)]: true,
-      // [utils.asGridCoord(11,5)]: true,
-      // [utils.asGridCoord(12,5)]: true,
-      // [utils.asGridCoord(1,5)]: true,
-      // [utils.asGridCoord(1,6)]: true,
-      // [utils.asGridCoord(1,7)]: true,
-      // [utils.asGridCoord(1,9)]: true,
-      // [utils.asGridCoord(2,9)]: true,
-      // [utils.asGridCoord(6,7)]: true,
-      // [utils.asGridCoord(7,7)]: true,
-      // [utils.asGridCoord(9,7)]: true,
-      // [utils.asGridCoord(10,7)]: true,
-      // [utils.asGridCoord(9,9)]: true,
-      // [utils.asGridCoord(10,9)]: true,
-      // [utils.asGridCoord(3,10)]: true,
-      // [utils.asGridCoord(4,10)]: true,
-      // [utils.asGridCoord(6,10)]: true,
-      // [utils.asGridCoord(7,10)]: true,
-      // [utils.asGridCoord(8,10)]: true,
-      // [utils.asGridCoord(11,10)]: true,
-      // [utils.asGridCoord(12,10)]: true,
-
-      // [utils.asGridCoord(0,8)]: true,
-      // [utils.asGridCoord(5,11)]: true,
-
-      // [utils.asGridCoord(4,3)]: true,
-      // [utils.asGridCoord(9,4)]: true,
-      // [utils.asGridCoord(10,4)]: true,
-
-      // [utils.asGridCoord(13,6)]: true,
-      // [utils.asGridCoord(13,7)]: true,
-      // [utils.asGridCoord(13,8)]: true,
-      // [utils.asGridCoord(13,9)]: true,
-
-    }
+    walls: utils.getWalls('partyScene')
   },
   Street: {
     id: "Street",
