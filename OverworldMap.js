@@ -60,6 +60,9 @@ class OverworldMap {
       if (config.type === "PizzaStone") {
         obj = new PizzaStone(config);
       }
+      if (config.type === "InteractiveObject") {
+        obj = new InteractiveObject(config);
+      }
       this.gameObjects[key] = obj;
       this.gameObjects[key].id = key;
       obj.mount(this);
@@ -261,7 +264,7 @@ window.OverworldMaps = {
       kitchenNpcA: {
         type: "Person",
         x: utils.withGrid(12),
-        y: utils.withGrid(13),
+        y: utils.withGrid(14),
         src: "/images/characters/people/npc3.png",
         talking: [
           {
@@ -275,14 +278,24 @@ window.OverworldMaps = {
           { type: "walk", direction: "right", },
           { type: "walk", direction: "right", },
           { type: "walk", direction: "down", },
-          { type: "walk", direction: "down", },
+          // { type: "walk", direction: "down", },
           { type: "walk", direction: "left", },
           { type: "walk", direction: "left", },
           { type: "walk", direction: "up", },
-          { type: "walk", direction: "up", },
+          // { type: "walk", direction: "up", },
           { type: "stand", direction: "up", time: 500 },
           { type: "stand", direction: "left", time: 500 },
         ]
+      },
+      stereo: {
+        type: "InteractiveObject",
+        scene: "partyScene",
+        options: ["song1", "song2"],
+        interactiveObjectClass: new Stereo(["song1", "song2"]),
+        x: utils.withGrid(9),
+        y: utils.withGrid(15),
+        storyFlag: "USED_PIZZA_STONE",
+        src: "/images/icons/spicy.png",
       },
     },
     cutsceneSpaces: {
@@ -351,7 +364,8 @@ window.OverworldMaps = {
       }]
     },
     walls: {
-      // [utils.asGridCoord(2,4)]: true,
+      [utils.asGridCoord(16,8)]: true,
+      [utils.asGridCoord(15,9)]: true,
       // [utils.asGridCoord(3,4)]: true,
       // [utils.asGridCoord(5,4)]: true,
       // [utils.asGridCoord(6,4)]: true,

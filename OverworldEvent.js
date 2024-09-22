@@ -120,6 +120,17 @@ class OverworldEvent {
     menu.init(document.querySelector(".game-container"))
   }
 
+  interactionMenu(resolve) {
+    const menu = new InteractionMenu({
+      optionsList: this.event.optionsList,
+      interactiveObjectInstance: this.event.interactiveObjectInstance,
+      onComplete: () => {
+        resolve();
+      }
+    })
+    menu.init(document.querySelector(".game-container"))
+  }
+
   init() {
     return new Promise(resolve => {
       this[this.event.type](resolve)      
