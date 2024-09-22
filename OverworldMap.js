@@ -266,8 +266,8 @@ window.OverworldMaps = {
       },
       kitchenNpcA: {
         type: "Person",
-        x: utils.withGrid(12),
-        y: utils.withGrid(14),
+        x: utils.withGrid(3),
+        y: utils.withGrid(12),
         src: "/images/characters/people/npc3.png",
         talking: [
           {
@@ -365,16 +365,16 @@ window.OverworldMaps = {
       //     ]
       //   }
       // ],
-      [utils.asGridCoord(16,10)]: [{
+      [utils.asGridCoord(17,10)]: [{
         disqualify: ["SEEN_INTRO"],
         events: [
           { type: "addStoryFlag", flag: "SEEN_INTRO"},
           { type: "walk", who: "kitchenNpcB", direction: "up"},
           { type: "walk", who: "kitchenNpcB", direction: "up"},
-          { type: "walk", who: "kitchenNpcB", direction: "up"},
+          { type: "stand", who: "kitchenNpcB", direction: "up", time: 200},
           // { type: "walk", who: "kitchenNpcB", direction: "up"},
-          { type: "stand", who: "kitchenNpcB", direction: "left", time: 200},
-          { type: "stand", who: "hero", direction: "right", time: 200},
+          // { type: "stand", who: "kitchenNpcB", direction: "left", time: 200},
+          { type: "stand", who: "hero", direction: "down", time: 200},
           { type: "textMessage", text: "Zak! So glad you could make it."},
           { type: "textMessage", text: "There's someone here you just have to meet..."},
           { type: "textMessage", text: "It could be hard to get her attention though..."},
