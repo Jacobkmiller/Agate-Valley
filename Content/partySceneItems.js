@@ -2,6 +2,7 @@ class Stereo {
   constructor(options) {
     // this.storyFlag = config.storyFlag;
     this.songOptions = options;
+    this.storyFlag = "";
 
     this.Songs = {
       "song1": {
@@ -14,6 +15,7 @@ class Stereo {
         audioFile: "audio/KAgateLoveStory.m4a",
         image: "temp"
       },
+      
       // "song3": {
       //   name: "T. Swift, Love Story",
       // },
@@ -23,6 +25,10 @@ class Stereo {
   getOptions(interactionMenuInstance) {
     return this.songOptions.map(id => {
       const base = this.Songs[id];
+      if (id == "song1") {
+        this.storyFlag = "PLAYED_TSWIFT_LOVE_STORY"
+      }
+      interactionMenuInstance.interactiveObjectClassInstance.setStoryFlag(this.storyFlag)
       return {
         label: base.name,
         // description: base.description,

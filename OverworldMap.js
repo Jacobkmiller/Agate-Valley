@@ -91,8 +91,8 @@ class OverworldMap {
     const match = Object.values(this.gameObjects).find(object => {
       return `${object.x},${object.y}` === `${nextCoords.x},${nextCoords.y}`
     });
+    // console.log(match.talking)
     if (!this.isCutscenePlaying && match && match.talking.length) {
-
       const relevantScenario = match.talking.find(scenario => {
         return (scenario.required || []).every(sf => {
           return playerState.storyFlags[sf]
@@ -105,7 +105,10 @@ class OverworldMap {
   checkForFootstepCutscene() {
     const hero = this.gameObjects["hero"];
     const match = this.cutsceneSpaces[ `${hero.x},${hero.y}` ];
-    if (!this.isCutscenePlaying && match) {
+    if (!this.isCutscenePlaying && match && (match[0].required || []).every(sf => playerState.storyFlags[sf])) {
+      this.startCutscene( match[0].events )
+    }
+    if (match && (match[0].required || []).every(sf => playerState.storyFlags[sf]) && match[0].overrideCutscene) {
       this.startCutscene( match[0].events )
     }
   }
@@ -263,8 +266,8 @@ window.OverworldMaps = {
       },
       kitchenNpcA: {
         type: "Person",
-        x: utils.withGrid(12),
-        y: utils.withGrid(14),
+        x: utils.withGrid(3),
+        y: utils.withGrid(12),
         src: "/images/characters/people/npc3.png",
         talking: [
           {
@@ -287,6 +290,23 @@ window.OverworldMaps = {
           { type: "stand", direction: "left", time: 500 },
         ]
       },
+      dana: {
+        type: "Person",
+        x: utils.withGrid(5),
+        y: utils.withGrid(18),
+        src: "/images/characters/people/npc4.png",
+        talking: [
+          {
+            events: [
+              { type: "textMessage", text: "**You are too shy to get the pretty girl's attention.**"},
+            ]
+          }
+        ],
+        behaviorLoop: [
+          { type: "stand", direction: "down", time: 700 },
+          { type: "stand", direction: "left", time: 500 },
+        ]
+      },
       stereo: {
         type: "InteractiveObject",
         scene: "partyScene",
@@ -294,21 +314,40 @@ window.OverworldMaps = {
         interactiveObjectClass: new Stereo(["song1", "song2"]),
         x: utils.withGrid(9),
         y: utils.withGrid(15),
-        storyFlag: "USED_PIZZA_STONE",
+        storyFlag: "PLAYED_TSWIFT_LOVE_STORY",
         src: "/images/icons/spicy.png",
+        // talking: [
+        //   {
+        //     required: ["PLAYED_KAGATE_LOVE_STORY"],
+        //     events: [
+        //         { type: "textMessage", text: "What a lovely song...", faceHero: "kitchenNpcA" },
+        //       ]
+        //   }
+        // ]
       },
     },
     cutsceneSpaces: {
-      [utils.asGridCoord(5,10)]: [
+      [utils.asGridCoord(9,14)]: [
         {
+          required: ["PLAYED_TSWIFT_LOVE_STORY"],
+          overrideCutscene: true,
+          cutsceneAlreadyCompleted: false,
           events: [
-            { 
-              type: "changeMap", 
-              map: "DiningRoom",
-              x: utils.withGrid(7),
-              y: utils.withGrid(3),
-              direction: "down"
-            }
+            { type: "walk", who: "dana", direction: "up"},
+            { type: "walk", who: "dana", direction: "up"},
+            { type: "walk", who: "dana", direction: "up"},
+            { type: "walk", who: "dana", direction: "up"},
+            { type: "walk", who: "dana", direction: "up"},
+            { type: "walk", who: "dana", direction: "up"},
+            { type: "walk", who: "dana", direction: "right"},
+            { type: "walk", who: "dana", direction: "right"},
+            { type: "walk", who: "dana", direction: "right"},
+            { type: "walk", who: "dana", direction: "right"},
+            { type: "stand", who: "hero", direction: "left"},
+            { type: "textMessage", text: "I love this song!", faceHero: "dana" },
+            { type: "textMessage", text: "My name is Dana. What's yours?", faceHero: "kitchenNpcA" },
+            { type: "textMessage", text: "Do you like Taylor Swift too?"},
+
           ]
         }
       ],
@@ -326,16 +365,16 @@ window.OverworldMaps = {
       //     ]
       //   }
       // ],
-      [utils.asGridCoord(16,10)]: [{
+      [utils.asGridCoord(17,10)]: [{
         disqualify: ["SEEN_INTRO"],
         events: [
           { type: "addStoryFlag", flag: "SEEN_INTRO"},
           { type: "walk", who: "kitchenNpcB", direction: "up"},
           { type: "walk", who: "kitchenNpcB", direction: "up"},
-          { type: "walk", who: "kitchenNpcB", direction: "up"},
+          { type: "stand", who: "kitchenNpcB", direction: "up", time: 200},
           // { type: "walk", who: "kitchenNpcB", direction: "up"},
-          { type: "stand", who: "kitchenNpcB", direction: "left", time: 200},
-          { type: "stand", who: "hero", direction: "right", time: 200},
+          // { type: "stand", who: "kitchenNpcB", direction: "left", time: 200},
+          { type: "stand", who: "hero", direction: "down", time: 200},
           { type: "textMessage", text: "Zak! So glad you could make it."},
           { type: "textMessage", text: "There's someone here you just have to meet..."},
           { type: "textMessage", text: "It could be hard to get her attention though..."},

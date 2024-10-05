@@ -106,7 +106,10 @@ class OverworldEvent {
   }
 
   addStoryFlag(resolve) {
-    window.playerState.storyFlags[this.event.flag] = true;
+    if (this.event.flag.length > 0) {
+      window.playerState.storyFlags[this.event.flag] = true;
+      this.map.checkForFootstepCutscene()
+    }
     resolve();
   }
 
@@ -124,6 +127,7 @@ class OverworldEvent {
     const menu = new InteractionMenu({
       optionsList: this.event.optionsList,
       interactiveObjectInstance: this.event.interactiveObjectInstance,
+      interactiveObjectClassInstance: this.event.interactiveObjectClassInstance,
       onComplete: () => {
         resolve();
       }

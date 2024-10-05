@@ -1,8 +1,9 @@
 class InteractionMenu {
-  constructor({ optionsList, interactiveObjectInstance, onComplete}) {
+  constructor({ optionsList, interactiveObjectInstance, interactiveObjectClassInstance, onComplete}) {
     this.optionsList = optionsList;
     this.onComplete = onComplete;
     this.interactiveObjectInstance = interactiveObjectInstance;
+    this.interactiveObjectClassInstance = interactiveObjectClassInstance;
   }
 
   getOptions() {
