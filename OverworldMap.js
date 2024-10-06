@@ -14,6 +14,8 @@ class OverworldMap {
 
     this.isCutscenePlaying = false;
     this.isPaused = false;
+    // this.newCutsceneFlags = {};
+    // this.expiredCutsceneFlags = {};
   }
 
   drawLowerImage(ctx, cameraPerson) {
@@ -46,6 +48,10 @@ class OverworldMap {
       return false;
     })
   }
+
+  // addToCutsceneQueue(cutscene) {
+  //     this.eventQueue.push(cutscene);
+  // }
 
   mountObjects() {
     Object.keys(this.configObjects).forEach(key => {
@@ -83,6 +89,11 @@ class OverworldMap {
       }
     }
     this.isCutscenePlaying = false;
+    // We now check if there are any cutscenes that should be triggered based on new flags added during the last cutscene
+    if (window.playerState.newStoryFlags) {
+      this.checkForTriggeredFlagCutscene()
+      window.playerState.newStoryFlags = false;
+    }
   }
 
   checkForActionCutscene() {
@@ -113,6 +124,16 @@ class OverworldMap {
     }
   }
 
+  checkForTriggeredFlagCutscene() {
+    const hero = this.gameObjects["hero"];
+    const match = this.cutsceneSpaces[ `${hero.x},${hero.y}` ];
+    if (!this.isCutscenePlaying && match && (match[0].required || []).every(sf => playerState.storyFlags[sf])) {
+      this.startCutscene( match[0].events )
+    }
+    if (match && (match[0].required || []).every(sf => playerState.storyFlags[sf]) && match[0].overrideCutscene) {
+      this.startCutscene( match[0].events )
+    }
+  }
 
 }
 
@@ -266,25 +287,32 @@ window.OverworldMaps = {
       },
       kitchenNpcA: {
         type: "Person",
-        x: utils.withGrid(3),
+        x: utils.withGrid(4),
         y: utils.withGrid(12),
         src: "/images/characters/people/npc3.png",
         talking: [
           {
+            required: ["PLAYED_TSWIFT_LOVE_STORY"],
             events: [
-              { type: "textMessage", text: "W-what? You're looking for a girl called Dana too?", faceHero: "kitchenNpcB" },
-              { type: "textMessage", text: "Well...may the best man win.", faceHero: "kitchenNpcB" },
+              { type: "textMessage", text: "Can't you see I'm talking to this pretty lady?", faceHero: "kitchenNpcA" },
+              { who: "kitchenNpcA", type: "stand",  direction: "down", time: 500 },
+            ]
+          },
+          {
+            events: [
+              { type: "textMessage", text: "W-what? You're looking for a girl called Dana too?", faceHero: "kitchenNpcA" },
+              { type: "textMessage", text: "Well...may the best man win.", faceHero: "kitchenNpcA" },
             ]
           }
         ],
         behaviorLoop: [
-          { type: "walk", direction: "right", },
-          { type: "walk", direction: "right", },
-          { type: "walk", direction: "down", },
+          // { type: "walk", direction: "right", },
+          // { type: "walk", direction: "right", },
           // { type: "walk", direction: "down", },
-          { type: "walk", direction: "left", },
-          { type: "walk", direction: "left", },
-          { type: "walk", direction: "up", },
+          // { type: "walk", direction: "down", },
+          // { type: "walk", direction: "left", },
+          // { type: "walk", direction: "left", },
+          // { type: "walk", direction: "up", },
           // { type: "walk", direction: "up", },
           { type: "stand", direction: "up", time: 500 },
           { type: "stand", direction: "left", time: 500 },
@@ -296,6 +324,12 @@ window.OverworldMaps = {
         y: utils.withGrid(18),
         src: "/images/characters/people/npc4.png",
         talking: [
+          {
+            required: ["PLAYED_TSWIFT_LOVE_STORY"],
+            events: [
+              { type: "textMessage", text: "**You can't find a good time to interrupt the conversation.**"},
+            ]
+          },
           {
             events: [
               { type: "textMessage", text: "**You are too shy to get the pretty girl's attention.**"},
@@ -314,7 +348,7 @@ window.OverworldMaps = {
         interactiveObjectClass: new Stereo(["song1", "song2"]),
         x: utils.withGrid(9),
         y: utils.withGrid(15),
-        storyFlag: "PLAYED_TSWIFT_LOVE_STORY",
+        // storyFlag: "PLAYED_TSWIFT_LOVE_STORY",
         src: "/images/icons/spicy.png",
         // talking: [
         //   {
@@ -325,36 +359,78 @@ window.OverworldMaps = {
         //   }
         // ]
       },
+      tv: {
+        type: "InteractiveObject",
+        scene: "partyScene",
+        options: ["show1", "show2", "show3"],
+        interactiveObjectClass: new TV(["show1", "show2", "show3"]),
+        x: utils.withGrid(23),
+        y: utils.withGrid(15),
+        // storyFlag: "PLAYED_TSWIFT_LOVE_STORY",
+        src: "/images/icons/fungi.png",
+        // talking: [
+        //   {
+        //     required: ["PLAYED_KAGATE_LOVE_STORY"],
+        //     events: [
+        //         { type: "textMessage", text: "What a lovely song...", faceHero: "kitchenNpcA" },
+        //       ]
+        //   }
+        // ]
+      },
     },
+    
     cutsceneSpaces: {
       [utils.asGridCoord(9,14)]: [
         {
-          required: ["PLAYED_TSWIFT_LOVE_STORY"],
-          overrideCutscene: true,
+          required: ["PLAYED_TSWIFT_LOVE_STORY", "TSWIFT_NOT_COMPLETED"],
+          overrideCutscene: false,
           cutsceneAlreadyCompleted: false,
           events: [
             { type: "walk", who: "dana", direction: "up"},
-            { type: "walk", who: "dana", direction: "up"},
-            { type: "walk", who: "dana", direction: "up"},
-            { type: "walk", who: "dana", direction: "up"},
-            { type: "walk", who: "dana", direction: "up"},
-            { type: "walk", who: "dana", direction: "up"},
             { type: "walk", who: "dana", direction: "right"},
             { type: "walk", who: "dana", direction: "right"},
             { type: "walk", who: "dana", direction: "right"},
-            { type: "walk", who: "dana", direction: "right"},
-            { type: "stand", who: "hero", direction: "left"},
+            { type: "walk", who: "dana", direction: "up"},
+            { type: "stand", who: "hero", direction: "down"},
             { type: "textMessage", text: "I love this song!", faceHero: "dana" },
             { type: "textMessage", text: "My name is Dana. What's yours?", faceHero: "kitchenNpcA" },
             { type: "textMessage", text: "Do you like Taylor Swift too?"},
+            { type: "walk", who: "kitchenNpcA", direction: "right"},
+            { type: "walk", who: "kitchenNpcA", direction: "up"},
+            { type: "walk", who: "kitchenNpcA", direction: "right"},
+            { type: "walk", who: "kitchenNpcA", direction: "right"},
+            { type: "walk", who: "kitchenNpcA", direction: "right"},
+            { type: "walk", who: "kitchenNpcA", direction: "down"},
+            { type: "walk", who: "kitchenNpcA", direction: "down"},
+            { type: "walk", who: "kitchenNpcA", direction: "down"},
+            { type: "walk", who: "kitchenNpcA", direction: "down"},
+            { type: "textMessage", text: "Did you say your name was Dana? I-I love Taylor Swift too."},
+            { type: "textMessage", text: "Let's go somewhere private Dana and you can show me your favorite songs?"},
+            { type: "textMessage", text: "Okay!"},
+            { type: "updateBehaviorLoops", newBehaviors: {
+                "dana": [
+                  { type: "stand", who: "dana", direction: "up", time: 500 },
+                ],
+                "kitchenNpcA": [
+                  { type: "stand", who: "kitchenNpcA", direction: "down", time: 500 },
+                ]
+              }
+            },
+            { type: "markCutsceneCompleted", flag: "TSWIFT_NOT_COMPLETED"}
+            // { type: "walk", who: "kitchenNpcA", direction: "up"},
+            // { type: "walk", who: "dana", direction: "up"},
+            // { type: "walk", who: "kitchenNpcA", direction: "up"},
+            // { type: "walk", who: "dana", direction: "up"},
+            // { type: "walk", who: "kitchenNpcA", direction: "up"},
+            // { type: "walk", who: "dana", direction: "up"},
+            // { type: "walk", who: "kitchenNpcA", direction: "left"},
+            // { type: "walk", who: "dana", direction: "up"},
+            // { type: "walk", who: "dana", direction: "up"},
+            // { type: "walk", who: "kitchenNpcA", direction: "left"},
+            // { type: "walk", who: "dana", direction: "left"},
+            // { type: "walk", who: "kitchenNpcA", direction: "left"},
+            // { type: "walk", who: "dana", direction: "left"},
 
-          ]
-        }
-      ],
-      [utils.asGridCoord(4,9)]: [
-        {
-          events: [
-            { type: "textMessage", text: "You should give your gf several kisses right now."},
           ]
         }
       ],
@@ -380,18 +456,6 @@ window.OverworldMaps = {
           { type: "textMessage", text: "It could be hard to get her attention though..."},
           { type: "textMessage", text: "Maybe if you put on her favorite tv show? Maybe a little music to get her attention too?"},
           { type: "textMessage", text: "Well...good luck."},
-          // { type: "walk", who: "kitchenNpcA", direction: "down"},
-          // { type: "stand", who: "kitchenNpcA", direction: "right", time: 200},
-          // { type: "stand", who: "hero", direction: "left", time: 200},
-          // { type: "textMessage", text: "Ahem. Is this your best work?"},
-          // { type: "textMessage", text: "These pepperonis are completely unstable! The pepper shapes are all wrong!"},
-          // { type: "textMessage", text: "Don't even get me started on the mushrooms."},
-          // { type: "textMessage", text: "You will never make it in pizza!"},
-          // { type: "stand", who: "kitchenNpcA", direction: "right", time: 200},
-          // { type: "walk", who: "kitchenNpcA", direction: "up"},
-          // { type: "stand", who: "kitchenNpcA", direction: "up", time: 300},
-          // { type: "stand", who: "hero", direction: "down", time: 400},
-          // { type: "textMessage", text: "* The competition is fierce! You should spend some time leveling up your Pizza lineup and skills. *"},
           // {
           //   type: "changeMap",
           //   map: "Street",
