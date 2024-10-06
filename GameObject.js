@@ -29,6 +29,11 @@ class GameObject {
   update() {
   }
 
+  setNewBehaviorLoop(newBehaviors) {
+    this.behaviorLoop = newBehaviors;
+    this.behaviorLoopIndex = 0;
+  }
+
   async doBehaviorEvent(map) { 
 
     //I don't have config to do anything
