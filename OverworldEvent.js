@@ -105,13 +105,64 @@ class OverworldEvent {
     menu.init(document.querySelector(".game-container"));
   }
 
+  // This is used when the new flag added should trigger a cutscene
+  newFlagCutscene(resolve) {
+    // const who = this.map.gameObjects[ this.event.who ];
+
+    // who.startBehavior({
+    //   map: this.map
+    // }, {
+    //   type: "stand",
+    //   direction: this.event.direction,
+    //   time: this.event.time
+    // })
+    const completeHandler = e => {
+      // if (this.event.flag.length > 0) {
+        // window.playerState.storyFlags[this.event.flag] = true;
+        // console.log(this.event.flag)
+      if (e.detail.whoId === this.event.who) {
+        document.removeEventListener("NewFlagAdded", completeHandler);
+        resolve();
+      }
+    }
+    document.addEventListener("NewFlagAdded", completeHandler)
+  }
+
   addStoryFlag(resolve) {
     if (this.event.flag.length > 0) {
       window.playerState.storyFlags[this.event.flag] = true;
-      this.map.checkForFootstepCutscene()
+      // this.map.checkForFootstepCutscene()
     }
     resolve();
   }
+
+  // This probably shouldn't be an OverworlEvent. Will change this later
+  updateBehaviorLoops(resolve) {
+    const newBehaviorsMap = this.event.newBehaviors
+    Object.keys(newBehaviorsMap).forEach((key) => {
+      const value = newBehaviorsMap[key];
+      const who = this.map.gameObjects[ key ];
+      who.setNewBehaviorLoop(value)
+    });
+    resolve();
+  }
+
+  markCutsceneCompleted(resolve) {
+    if (this.event.flag.length > 0) {
+      window.playerState.storyFlags[this.event.flag] = false;
+      // this.map.checkForFootstepCutscene()
+    }
+    resolve();
+  }
+
+  // addedStoryFlag(resolve) {
+  //   if (this.map.isCutscenePlaying) {
+  //     this.map.eventQueue
+  //   }
+  //   utils.emitEvent("NewFlagAdded", {
+  //   })
+  //   resolve();
+  // }
 
   craftingMenu(resolve) {
     const menu = new CraftingMenu({
