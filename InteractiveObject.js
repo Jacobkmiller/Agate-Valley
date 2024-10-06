@@ -11,7 +11,8 @@ class InteractiveObject extends GameObject {
         currentAnimation: config.currentAnimation || "used-down",
       });
       this.objectType = config.objectType
-      this.storyFlag = config.storyFlag;
+      // this.storyFlag = config.storyFlag;
+      // this.storyFlag = "NOT_T_SWIFT";
       this.interactiveObjectClass = config.interactiveObjectClass;
       this.talking = config.talking || this.interactiveObjectClass.talking || [
         {
@@ -19,7 +20,9 @@ class InteractiveObject extends GameObject {
             { type: "textMessage", text: "Choose an option..." },
             // { type: "interactionMenu", options: this.interactiveObjectClass.getOptions() },
             { type: "interactionMenu", optionsList: config.options, interactiveObjectInstance: this.interactiveObjectClass, interactiveObjectClassInstance: this },
-            { type: "addStoryFlag", flag: this.storyFlag },
+            // { type: "addedStoryFlag"},
+            
+            // { type: "addStoryFlag", flag: () => this.getStoryFlag() },
           ]
         }
       ];
@@ -29,8 +32,12 @@ class InteractiveObject extends GameObject {
     //   ? "used-down"
     //   : "unused-down";
     }
-    setStoryFlag(storyFlag) {
-      this.storyFlag = storyFlag;
-    }
+    // setStoryFlag(storyFlag) {
+    //   this.storyFlag = storyFlag;
+    // }
+    
+    // getStoryFlag() {
+    //   return this.storyFlag
+    // }
   
   }

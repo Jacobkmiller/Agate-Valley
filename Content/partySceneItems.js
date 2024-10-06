@@ -25,20 +25,94 @@ class Stereo {
   getOptions(interactionMenuInstance) {
     return this.songOptions.map(id => {
       const base = this.Songs[id];
-      if (id == "song1") {
-        this.storyFlag = "PLAYED_TSWIFT_LOVE_STORY"
-      }
-      interactionMenuInstance.interactiveObjectClassInstance.setStoryFlag(this.storyFlag)
+      // interactionMenuInstance.interactiveObjectClassInstance.setStoryFlag(this.storyFlag)
       return {
         label: base.name,
         // description: base.description,
         handler: () => {
+          if (id == "song1") {
+            this.storyFlag = "PLAYED_TSWIFT_LOVE_STORY"
+          }
+          else {
+            this.storyFlag = "NOT_T_SWIFT"
+          }
+          // interactionMenuInstance.interactiveObjectClassInstance.setStoryFlag(this.storyFlag)
+          // playerState.addStoryFlag(this.storyFlag)
           // playerState.addPizza(id);
           const audio = new Audio(base.audioFile);
           audio.muted = false
           audio.volume = 1.0
           audio.play();
           interactionMenuInstance.close();
+          window.playerState.storyFlags[this.storyFlag] = true;
+          if (!("TSWIFT_NOT_COMPLETED" in window.playerState.storyFlags)) {
+            window.playerState.storyFlags["TSWIFT_NOT_COMPLETED"] = true;
+          }
+          window.playerState.newStoryFlags = true;
+        }
+      }
+    })
+  }
+
+}
+
+// Could be combined with the Stereo class, but alas, work for another day
+class TV {
+  constructor(options) {
+    // this.storyFlag = config.storyFlag;
+    this.showOptions = options;
+    this.storyFlag = "";
+
+    this.Shows = {
+      "show1": {
+        name: "Happy Endings",
+        audioFile: "audio/TSwiftLoveStory.m4a",
+        image: "temp",
+      },
+      "show2": {
+        name: "Gilmore Girls",
+        audioFile: "audio/TSwiftLoveStory.m4a",
+        image: "temp"
+      },
+      "show3": {
+        name: "Riverdale",
+        audioFile: "audio/TSwiftLoveStory.m4a",
+        image: "temp"
+      },
+      
+      // "song3": {
+      //   name: "T. Swift, Love Story",
+      // },
+    }
+
+  }
+  getOptions(interactionMenuInstance) {
+    return this.showOptions.map(id => {
+      const base = this.Shows[id];
+      // interactionMenuInstance.interactiveObjectClassInstance.setStoryFlag(this.storyFlag)
+      return {
+        label: base.name,
+        // description: base.description,
+        handler: () => {
+          if (id == "show1") {
+            this.storyFlag = "PLAYED_HAPPY_ENDINGS"
+          }
+          else {
+            this.storyFlag = "NOT_HAPPY_ENDINGS"
+          }
+          // interactionMenuInstance.interactiveObjectClassInstance.setStoryFlag(this.storyFlag)
+          // playerState.addStoryFlag(this.storyFlag)
+          // playerState.addPizza(id);
+          const audio = new Audio(base.audioFile);
+          audio.muted = false
+          audio.volume = 1.0
+          audio.play();
+          interactionMenuInstance.close();
+          window.playerState.storyFlags[this.storyFlag] = true;
+          // window.playerState.storyFlags["TSWIFT_NOT_COMPLETED"] = true;
+          window.playerState.newStoryFlags = false;
+          // utils.emitEventNoId("NewFlagAdded", {
+          // })
         }
       }
     })
@@ -60,65 +134,4 @@ this.DanaSongs = {
   // "song3": {
   //   name: "T. Swift, Love Story",
   // },
-}
-
-
-
-window.PizzaTypes = {
-  normal: "normal",
-  spicy: "spicy",
-  veggie: "veggie",
-  fungi: "fungi",
-  chill: "chill",
-}
-
-window.Items = {
-  "stereo": {
-    name: "",
-    description: "Pizza desc here",
-    type: PizzaTypes.spicy,
-    src: "/images/characters/pizzas/s001.png",
-    icon: "/images/icons/spicy.png",
-    actions: [ "saucyStatus", "clumsyStatus", "damage1" ],
-  },
-  "s002": {
-    name: "Bacon Brigade",
-    description: "A salty warrior who fears nothing",
-    type: PizzaTypes.spicy,
-    src: "/images/characters/pizzas/s002.png",
-    icon: "/images/icons/spicy.png",
-    actions: [ "damage1", "saucyStatus", "clumsyStatus" ],
-  },
-  "v001": {
-    name: "Call Me Kale",
-    description: "Pizza desc here",
-    type: PizzaTypes.veggie,
-    src: "/images/characters/pizzas/v001.png",
-    icon: "/images/icons/veggie.png",
-    actions: [ "damage1" ],
-  },
-  "v002": {
-    name: "Archie Artichoke",
-    description: "Pizza desc here",
-    type: PizzaTypes.veggie,
-    src: "/images/characters/pizzas/v001.png",
-    icon: "/images/icons/veggie.png",
-    actions: [ "damage1" ],
-  },
-  "f001": {
-    name: "Portobello Express",
-    description: "Pizza desc here",
-    type: PizzaTypes.fungi,
-    src: "/images/characters/pizzas/f001.png",
-    icon: "/images/icons/fungi.png",
-    actions: [ "damage1" ],
-  },
-  "f002": {
-    name: "Say Shitake",
-    description: "Pizza desc here",
-    type: PizzaTypes.fungi,
-    src: "/images/characters/pizzas/f001.png",
-    icon: "/images/icons/fungi.png",
-    actions: [ "damage1" ],
-  }
 }
