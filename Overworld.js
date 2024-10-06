@@ -87,6 +87,15 @@ class Overworld {
    })
  }
 
+ bindHeroFlagCheck() {
+  document.addEventListener("NewFlagAdded", e => {
+    this.map.checkForTriggeredFlagCutscene()
+    // if (e.detail.whoId === "hero") {
+    //   //Hero's position has changed
+    //   this.map.checkForTriggeredFlagCutscene()
+    // }
+  })
+}
  startMap(mapConfig, heroInitialState=null) {
   this.map = new OverworldMap(mapConfig);
   this.map.overworld = this;
@@ -141,6 +150,7 @@ class Overworld {
   //Create controls
   this.bindActionInput();
   this.bindHeroPositionCheck();
+  this.bindHeroFlagCheck();
 
   this.directionInput = new DirectionInput();
   this.directionInput.init();
