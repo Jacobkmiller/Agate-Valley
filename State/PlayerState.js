@@ -35,9 +35,14 @@ class PlayerState {
       { actionId: "item_recoverHp", instanceId: "item2" },
       { actionId: "item_recoverHp", instanceId: "item3" },
     ]
+    this.newStoryFlags = false;
     this.storyFlags = {
     };
   }
+
+  // addStoryFlag(storyFlag) {
+  //   this.storyFlags[storyFlag] = true;
+  // }
 
   addPizza(pizzaId) {
     const newId = `p${Date.now()}`+Math.floor(Math.random() * 99999);
